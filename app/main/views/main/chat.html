@@ -7,8 +7,11 @@
 </form>
 
 {{ store.messages.reverse.each do |message| }}
-  <div>
-    <strong>{{ message.user.name }} :</strong>
-    <span>{{ message.body }}</span>
-  </div>
+  <:message user="{{ message.user.name }}" message="{{ message.body }}" />
 {{ end }}
+
+<:Message>
+  <div>
+    <strong>{{ attrs.user }} :</strong>
+    <span>{{ attrs.message }}</span>
+  </div>
