@@ -19,7 +19,10 @@ module Main
 
     def send_message
       store.messages.create(body: page._message_body)
-      reset_message
+        .then { reset_message }
+        .fail do |errors|
+          errors.each { |k, v| flash._errors << "#{k}: #{v}" }
+        end
     end
 
     def reset_message
