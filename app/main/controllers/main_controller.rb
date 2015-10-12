@@ -18,7 +18,7 @@ module Main
     private
 
     def send_message
-      store.messages.create(body: page._message_body)
+      current_chat.messages.create(body: page._message_body)
         .then { reset_message }
         .fail do |errors|
           errors.each { |k, v| flash._errors << "#{k}: #{v}" }
@@ -27,6 +27,11 @@ module Main
 
     def reset_message
       page._message_body = ''
+    end
+
+    def current_chat
+      current_index = (params._index || 0).to_i
+      store.chats[current_index]
     end
 
     # The main template contains a #template binding that shows another
