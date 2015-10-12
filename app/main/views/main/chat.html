@@ -1,0 +1,14 @@
+<:Head>
+  <h1>Chat</h1>
+<:Body>
+<form e-submit="send_message">
+  <label>Message</label>
+  <input type="text" class="form-control" value="{{ page._message_body }}" />
+</form>
+
+{{ store.messages.reverse.each do |message| }}
+  <div>
+    <strong>{{ message.user.name }} :</strong>
+    <span>{{ message.body }}</span>
+  </div>
+{{ end }}
