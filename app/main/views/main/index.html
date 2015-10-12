@@ -4,3 +4,9 @@
 <:Body>
   <h1>Home</h1>
 
+  {{ store.chats.each_with_index do |chat, index| }}
+    <div>
+      {{ chat._name }} |
+      <a href="{{ url_with(action: 'chat', index: index) }}">Join chat</a>
+    </div>
+  {{ end }}

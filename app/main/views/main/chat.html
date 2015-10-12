@@ -3,13 +3,6 @@
 
 <:Body>
   <h1>{{ current_chat._name }}</h1>
-  {{ store.chats.each_with_index do |chat, index| }}
-    <div>
-      {{ chat._name }} |
-    <a e-click="params._index = index">Join chat</a>
-    </div>
-  {{ end }}
-  <br />
 
   <form e-submit="send_message">
     <label>Message</label>
