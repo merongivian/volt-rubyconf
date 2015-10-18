@@ -25,8 +25,18 @@ describe 'chat', type: :feature do
         find('.form-control').set(message + "\n")
       end
 
-      expect(page).to have_content "juan : #{messages[0]}"
-      expect(page).to have_content "juan : #{messages[1]}"
+      messages.each do |message|
+        expect(page).to have_content (/#{juan[:name]}(.*?)#{message}/)
+      end
+    end
+
+    it 'allows only logged in user to see messages' do
+      find('.dropdown-toggle').click
+      click_link 'Logout'
+
+      visit '/chat'
+
+      expect(page).to have_content 'Please Login'
     end
   end
 
@@ -35,35 +45,38 @@ describe 'chat', type: :feature do
       visit '/chat'
 
       find('.form-control').set('' + "\n")
-      expect(page).to have_content 'body: must be at least 2 characters'
+      expect(page).to have_content 'must be at least 2 characters'
     end
   end
 
   describe 'chats messages' do
+    let(:cool_message)    { 'bien' }
+    let(:awesome_message) { 'parse' }
+
     before do
       visit '/chat?index=0'
-      find('.form-control').set('bien' + "\n")
+      find('.form-control').set(cool_message + "\n")
 
       visit '/chat?index=1'
-      find('.form-control').set('parse' + "\n")
+      find('.form-control').set(awesome_message + "\n")
     end
 
     it 'shows only messages from cool chat' do
       visit '/'
 
-      all('.chat-link')[0].find('a').click
+      all('a')[-2].click
 
-      expect(page).to have_content 'bien'
-      expect(page).to_not have_content 'parse'
+      expect(page).to have_content cool_message
+      expect(page).to_not have_content awesome_message
     end
 
     it 'shows only messages from awesome chat' do
       visit '/'
 
-      all('.chat-link')[1].find('a').click
+      all('a')[-1].click
 
-      expect(page).to have_content 'parse'
-      expect(page).to_not have_content 'bien'
+      expect(page).to have_content awesome_message
+      expect(page).to_not have_content cool_message
     end
   end
-end
+e
